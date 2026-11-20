@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper listed below."
+title: "Scalable Task Planning for Multiple Unmanned Aerial Vehicles in Large-Scale Continuous Delivery Using Local Perception and Inducing Representation"
+type: software
+license: MIT
+repository-code: "https://github.com/zhuqingyuan517/maenvs4vrp"
+url: "https://github.com/zhuqingyuan517/maenvs4vrp/tree/paper-eaai-uav-delivery"
+authors:
+  - family-names: Zhu
+    given-names: Feng
+  - family-names: Zhu
+    given-names: Qingyuan
+  - family-names: Yang
+    given-names: Can
+  - family-names: Tang
+    given-names: Wenjie
+  - family-names: Chen
+    given-names: Kai
+keywords:
+  - multi-agent reinforcement learning
+  - vehicle routing
+  - unmanned aerial vehicles
+  - centralized training decentralized execution
+  - continuous delivery
+references:
+  - type: article
+    title: "Scalable Task Planning for Multiple Unmanned Aerial Vehicles in Large-Scale Continuous Delivery Using Local Perception and Inducing Representation"
+    authors:
+      - family-names: Zhu
+        given-names: Feng
+      - family-names: Chen
+        given-names: Kai
+    status: submitted
+    journal: "Engineering Applications of Artificial Intelligence"

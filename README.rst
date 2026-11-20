@@ -2,6 +2,17 @@
 MAEnvs4VRP
 **********
 
+.. note::
+
+   **This fork hosts the code for the paper** *Scalable Task Planning for
+   Multiple Unmanned Aerial Vehicles in Large-Scale Continuous Delivery Using
+   Local Perception and Inducing Representation* (under review,
+   Engineering Applications of Artificial Intelligence).
+
+   The new environments, models, baselines and evaluation scripts added by the
+   authors of that paper are listed in `OUR_CODE.md <OUR_CODE.md>`__. Everything
+   else is the upstream MAEnvs4VRP library by Gama et al. (MIT License).
+
 Multi Agent Environments for Vehicle Routing Problems
 
 MAEnvs4VRP is a library made up of multi-agent environments for simulating classic vehicle routing problems.
@@ -144,6 +155,10 @@ Two baseline models are available, which can be trained with:
 .. code-block:: python
 
     python maenvs4vrp/learning/madyam/train_madyam.py --vrp_env toptw --num_agents 5 --num_nodes 51  --val_set servs_50_agents_5 --selection stime
+
+The Chapter 4 DTOPTW baseline protocol, including MARDAM, RHC-ALNS,
+global-action ablation, and fixed-seed evaluation commands, is documented in
+``BASELINES.md``.
 
 Unit Testing
 =================
