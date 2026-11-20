@@ -1,0 +1,2 @@
+from maenvs4vrp.environments.dtoptw.instances_generator import InstanceGenerator
+

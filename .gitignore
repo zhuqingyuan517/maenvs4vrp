@@ -1,0 +1,34 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# ---------- IDE / OS ----------
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
+
+# ---------- 实验产物（体积大、可重生成） ----------
+logs/
+runs/
+maenvs4vrp/learning/*/runs/
+maenvs4vrp/learning/*/1000runs/
+*.zip
+*.pt
+*.pth
+events.out.tfevents.*
+
+# ---------- 仓库根目录误拷的副本（真正的包在 maenvs4vrp/ 里，注意前导斜杠只匹配根目录） ----------
+/core/
+/environments/
+/learning/
+/notebooks/
+/utils/
+
+# ---------- 本地临时 ----------
+*.log
+debug_*.py

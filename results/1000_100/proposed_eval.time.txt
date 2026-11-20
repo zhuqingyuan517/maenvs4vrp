@@ -1,0 +1,23 @@
+	Command being timed: "python -m maenvs4vrp.learning.madyam.eval_policy_model --vrp_env dtoptw_abs --model_variant third --checkpoint runs/1000_100/models/best_model_proposed_1000_100.zip --num_nodes 1000 --num_agents 100 --local_k_nodes 30 --critic_inducing_points 32 --embed_dim 128 --n_heads 8 --n_layers 3 --ff_hidden 512 --batch_size 1 --eval_episodes 100 --seed 12345 --device cuda:0 --save_csv results/1000_100/proposed.csv"
+	User time (seconds): 503.17
+	System time (seconds): 1.47
+	Percent of CPU this job got: 101%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:18.77
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1870936
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 458808
+	Voluntary context switches: 10089
+	Involuntary context switches: 2361
+	Swaps: 0
+	File system inputs: 576
+	File system outputs: 40
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

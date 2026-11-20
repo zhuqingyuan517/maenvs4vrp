@@ -1,0 +1,23 @@
+	Command being timed: "python -m maenvs4vrp.learning.madyam.eval_policy_baselines --vrp_env dtoptw_abs --policy_type greedy --num_nodes 1000 --num_agents 100 --local_k_nodes 30 --batch_size 1 --eval_episodes 100 --num_workers 1 --seed 12345 --device cuda:0 --save_csv results/1000_100/greedy.csv"
+	User time (seconds): 492.68
+	System time (seconds): 1.18
+	Percent of CPU this job got: 101%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:07.65
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1542644
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 399152
+	Voluntary context switches: 9905
+	Involuntary context switches: 2932
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 40
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

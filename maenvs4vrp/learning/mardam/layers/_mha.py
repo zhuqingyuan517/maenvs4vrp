@@ -25,8 +25,13 @@ def scaled_dot_prod_attention(queries, keys, values, mask = None):
     if mask is not None:
         if mask.dim() == weights.dim() - 1:
             mask = mask.unsqueeze(-2).expand_as(weights)
-        weights[mask] = -float('inf')
-    weights = F.softmax(weights, dim = -1 )
+        all_masked = mask.all(dim=-1, keepdim=True)
+        safe_mask = mask.clone()
+        safe_mask[..., 0] = safe_mask[..., 0] & (~all_masked.squeeze(-1))
+        weights = F.softmax(weights.masked_fill(safe_mask, -float('inf')), dim=-1)
+        weights = weights.masked_fill(all_masked, 0.0)
+    else:
+        weights = F.softmax(weights, dim=-1)
     return weights.matmul( values )
 
 
@@ -155,9 +160,14 @@ class _MHA_V2(nn.Module):
                 m = mask.view(-1,1,l_q,l_kv).expand_as(weights)
             else: # common mask for all queries
                 m = mask.view(-1,1,1,l_kv).expand_as(weights)
-            weights[m] = -float('inf')
-
-        weights = F.softmax(weights, dim = -1)
+            all_masked = m.all(dim=-1, keepdim=True)
+            safe_mask = m.clone()
+            safe_mask[..., 0] = safe_mask[..., 0] & (~all_masked.squeeze(-1))
+            weights = weights.masked_fill(safe_mask, -float('inf'))
+            weights = F.softmax(weights, dim=-1)
+            weights = weights.masked_fill(all_masked, 0.0)
+        else:
+            weights = F.softmax(weights, dim=-1)
 
         att_applied = weights.matmul(v_proj).permute(0,2,1,3).contiguous().view(
                 *size, l_q, self.head_count * self.value_size_per_head)

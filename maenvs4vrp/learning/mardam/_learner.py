@@ -1,4 +1,8 @@
 from maenvs4vrp.learning.mardam.layers import TransformerEncoder, MultiHeadAttention
+from maenvs4vrp.learning.mardam.numerics import (
+    assert_finite,
+    assert_not_nan_or_posinf,
+)
 
 import torch
 import torch.nn as nn
@@ -75,7 +79,8 @@ class AttentionLearner(nn.Module):
         return compat
 
 
-    def _get_logp(self, compat, veh_mask):
+    @staticmethod
+    def _get_logp(compat, veh_mask, debug=False):
         r"""
         :param compat:   :math:`N \times 1 \times L_c` tensor containing minibatch of compatibility scores between currently acting vehicle and each customer
         :param veh_mask: :math:`N \times 1 \times L_c` tensor containing minibatch of masks
@@ -83,14 +88,25 @@ class AttentionLearner(nn.Module):
 
         :return:         :math:`N \times L_c` tensor containing minibatch of log-probabilities for choosing which customer to serve next
         """
-        compat[veh_mask] = -float('inf')
-        return compat.log_softmax(dim = 2).squeeze(1)
+        # An all-masked row makes log_softmax return NaNs, which later trips a
+        # device-side assertion inside multinomial. Keep the depot (index 0) as
+        # a safe fallback so batched rollouts can still advance other samples.
+        if debug:
+            assert_finite("compatibility_scores", compat)
+        empty_rows = veh_mask.all(dim=-1, keepdim=True)
+        safe_mask = veh_mask.clone()
+        safe_mask[..., 0] = safe_mask[..., 0] & (~empty_rows.squeeze(-1))
+        logp = compat.masked_fill(safe_mask, -float('inf')).log_softmax(dim=2).squeeze(1)
+        if debug:
+            # Masked actions intentionally have -inf log probability.
+            assert_not_nan_or_posinf("action_log_probabilities", logp)
+        return logp
 
 
-    def step(self, vehicles_obs, cur_veh_idx, mask, action_mask, deterministic=False):
+    def step(self, vehicles_obs, cur_veh_idx, mask, action_mask, deterministic=False, debug=False):
         veh_repr = self._repr_vehicle(vehicles_obs, cur_veh_idx, mask)
         compat = self._score_customers(veh_repr)
-        logp = self._get_logp(compat, action_mask)
+        logp = self._get_logp(compat, action_mask, debug=debug)
         if deterministic:
             cust_idx = logp.argmax(dim = 1, keepdim = True)
         else:

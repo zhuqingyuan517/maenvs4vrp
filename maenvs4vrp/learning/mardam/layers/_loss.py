@@ -59,7 +59,7 @@ def reinforce_loss(logprobs, rewards, baseline = None, weights = None, discount 
         return loss.mean()
     
 
-def reinforce_mask_loss(logprobs, rewards, baseline = None,  step_mask=None, weights = None, discount = 1.0, reduction = 'mean'):
+def reinforce_mask_loss(logprobs, rewards, baseline = None,  step_mask=None, weights = None, discount = 1.0, reduction = 'mean', normalize_step_loss = False):
     r"""
     :param logprobs:  Iterable of length :math:`L` on tensors of size :math:`N \times 1`
     :param rewards:   Iterable of length :math:`L` on tensors of size :math:`N \times 1`
@@ -71,6 +71,8 @@ def reinforce_mask_loss(logprobs, rewards, baseline = None,  step_mask=None, wei
     :param reduction: 'none' No reduction,
                       'sum'  Compute sum of loss on batch,
                       'mean' Compute mean of loss on batch
+    :param normalize_step_loss: Average each sample's masked loss by its
+                                number of valid decision steps.
     """
     if weights is None:
         weights = repeat(1.0)
@@ -114,5 +116,9 @@ def reinforce_mask_loss(logprobs, rewards, baseline = None,  step_mask=None, wei
     elif reduction == 'sum':
         return loss.sum()
     else: # reduction == 'mean'
-        return (loss*step_mask).sum(dim=0).mean() #loss[step_mask].sum() / torch.sum(step_mask)
-    
+        masked_loss = loss * step_mask
+        if normalize_step_loss:
+            valid_steps = step_mask.sum(dim=0).clamp_min(1.0)
+            return (masked_loss.sum(dim=0) / valid_steps).mean()
+        return masked_loss.sum(dim=0).mean()
+
